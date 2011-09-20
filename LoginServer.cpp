@@ -30,7 +30,6 @@ LoginServer::LoginServer() {
 	//vetor de strings com tokens
 	char* strTokens[100];
 
-
 	int i = 0;
 
 	pair<char*, char*> data;			// par chave => valor a ser inserido no mapa
