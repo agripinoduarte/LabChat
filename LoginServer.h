@@ -14,7 +14,7 @@ using namespace std;
 
 class LoginServer {
 	private:
-		map<char*, char*> userList;
+		map<std::string, std::string> userList;
 
 	public:
 		LoginServer();

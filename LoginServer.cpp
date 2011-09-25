@@ -32,8 +32,6 @@ LoginServer::LoginServer() {
 
 	int i = 0;
 
-	pair<char*, char*> data;			// par chave => valor a ser inserido no mapa
-
 	//tenta abrir o arquivo com dados de usuários
 	is.open("users.bp", ifstream::in);
 
@@ -62,7 +60,7 @@ LoginServer::LoginServer() {
 		while (key != NULL) {
 			value = strtok (NULL, ":");
 			//adiciona o par no atributo userList (mapa principal de usuarios e senhas)
-			this->userList.insert(pair<char*, char*>(key, value));
+			this->userList.insert(pair<std::string, std::string>(key, value));
 			key = strtok (NULL, ":");
 		}
 		i++;
@@ -77,7 +75,7 @@ LoginServer::~LoginServer() {
 
 void
 LoginServer::printUserList() {
-	map<char*,char*>::iterator it;		// iterador para o mapa
+	map<std::string,std::string>::iterator it;		// iterador para o mapa
 
 	for (it = this->userList.begin() ; it != this->userList.end(); it++ )
 			cout << (*it).first << endl;
@@ -85,14 +83,14 @@ LoginServer::printUserList() {
 
 bool
 LoginServer::login(char* username, char* password) {
-	map<char*, char*>::iterator it;
+	map<std::string, std::string>::iterator it;
 
 	printUserList();
 	it = this->userList.find(username);
 
 	if(it != this->userList.end())
 	{
-		return strcmp(this->userList.find(username)->second, password);
+		return this->userList.find(username)->second == password;
 	}
 	else
 	{
@@ -139,12 +137,13 @@ LoginServer::signUp(char* username, char* password) {
 	if(!of)
 		return false;
 
-	this->userList[username] = password;
+	this->userList.insert(pair<std::string, std::string>(username, password));
 
 	strcat(username, ":");
 	strcat(username, password);
 	strcat(username, ";");
 
+	cout << username;
 	of.write(username, strlen(username));
 
 	of.close();
